@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+
+//const path = require('path');
 var priceMap = {}
 function buildTree(folderPath) {
     const stats = fs.statSync(folderPath);
@@ -23,24 +25,21 @@ function buildTree(folderPath) {
         } else {
             if(!priceMap[filePath]){
                 priceMap[filePath] = 1
-            }
-            tree.list.push({ name: filePath +"&price=" +   (priceMap[filePath] || 1) });
+            } 
+            tree.list.push({   url:filePath,  name: file.replace(/\.[^.]+$/, ''),price:    (priceMap[filePath] || 1) });
         }
     });
 
     return tree;
-} 
+}
 
-fs.writeFile('icons.list.json', JSON.stringify(buildTree('./icons'), null, 2).replace(/\\\\/g, '/'), (err) => {
+const folderPath = './icons'; // 替换为你要遍历的目录路径
+const tree = buildTree(folderPath);
+
+console.log(tree);
+fs.writeFile('icons.list.json', JSON.stringify(tree, null, 2).replace(/\\\\/g, '/'), (err) => {
     console.log('JSON data has been written to personal_info.json');
 });
-
-
-/*
-fs.writeFile('price.json', JSON.stringify(priceMap, null, 2).replace(/\\\\/g, '/'), (err) => {
-    console.log('JSON data has been written to personal_info.json');
-});
-
-1. 读到 ini 文件 给文件夹 添加作者说明 
-2. 有 svg 时 给一个 标识 
-*/
+//fs.writeFile('price.json', JSON.stringify(priceMap, null, 2).replace(/\\\\/g, '/'), (err) => {
+  //  console.log('JSON data has been written to personal_info.json');
+//});
