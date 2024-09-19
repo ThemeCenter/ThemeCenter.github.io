@@ -26,7 +26,9 @@ function buildTree(folderPath) {
             if(!priceMap[filePath]){
                 priceMap[filePath] = 1
             } 
-            tree.list.push({   url:filePath,  name: file.replace(/\.[^.]+$/, ''),price:    (priceMap[filePath] || 1) });
+            tree.list.push({   url:filePath, 
+			tail:filePath.slice((Math.max(0, filePath.lastIndexOf('.')) || Infinity) + 1),
+			name: file.replace(/\.[^.]+$/, ''),price:    (priceMap[filePath] || 1) });
         }
     });
 
